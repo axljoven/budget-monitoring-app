@@ -1,0 +1,6 @@
+{
+  "site-navigation": [
+    { "name": "Entries", "path": "/entries" },
+    { "name": "Settings", "path": "/settings" }
+  ]
+}
