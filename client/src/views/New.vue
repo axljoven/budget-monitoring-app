@@ -9,38 +9,58 @@
 
     <!-- Form -->
     <div id="entry-form" class="mb-6">
-      <div v-for="(entry, id) in entries" :key="id" class="entry-row shadow appearance-none border rounded w-full px-6 text-gray-700 leading-tight mb-2">
-        <div class="flex -mx-6 py-4">
+      <div v-for="(entry, id) in entries" :key="id" class="entry-row shadow appearance-none border rounded text-gray-700 leading-tight mb-2 flex items-center justify-between items-stretch">
+        <div class="w-full flex py-4">
           <!-- Entry name -->
-          <div class="entry-input-name w-2/3 px-6">
+          <div class="entry-input-name w-2/3 px-6 flex flex-col justify-center">
             <label class="label" :for="`entry-name-${entry.id}`">Name</label>
             <input class="input w-full" v-model="entry.name" :id="`entry-name-${entry.id}`" :name="`entry-name-${entry.id}`"
               type="text" placeholder="Entry name" >
           </div>
 
           <!-- Cash Spent -->
-          <div class="entry-input-spent w-1/3 px-6">
+          <div class="entry-input-spent w-1/3 px-6 flex flex-col justify-center">
             <label class="label" :for="`entry-spent-${entry.id}`">Cash</label>
-            <input class="input w-full" v-model="entry.spent" :id="`entry-spent-${entry.id}`" :name="`entry-spent-${entry.id}`"
-              type="text" placeholder="Cash spent">
+            <div class="flex items-center">
+              <label class="font-bold input-spent-label" :for="`entry-spent-${entry.id}`">PHP</label>
+              <input class="input input-spent text-right pl-3 w-full" type="text" minlength="1" maxlength="10" v-model="entry.spent" :id="`entry-spent-${entry.id}`" :name="`entry-spent-${entry.id}`"
+                placeholder="Cash spent">
+            </div>
           </div>
-        </div>
-      </div> <!-- flex -->
+        </div> <!-- flex -->
+
+        <!-- Delete -->
+        <a href="javascript:void(0)" class="delete" @click="deleteEntry(entry.id)">
+          <i class="icon ion-md-close"></i>
+        </a>
+
+      </div> 
     </div> <!-- #entry form -->
-    <button @click="newEntry" class="btn btn-primary">New Entry</button>
+
+    <!-- New Entry -->
+    <button @click="newEntry" class="btn btn-ghost mr-2">New Entry</button>
+
+    <!-- Save Entries -->
+    <button @click="saveEntry" class="btn btn-primary">Save</button>
+
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return { 
+    return {
       total: 0,
       prevID: 0,
       entries: []
     };
   },
   methods: {
+    getTotal() {
+      let total = 0;
+      this.entries.forEach(entry => total += entry.spent );
+      return Number(total);
+    },
     newEntry() {
       let newID = ++this.prevID;
       this.entries.push({
@@ -48,7 +68,22 @@ export default {
         name: `Entry ${newID}`,
         spent: 0
       })
-    }
+    },
+    deleteEntry(entryId) {
+      this.entries = this.entries.filter(entry => entry.id != entryId)
+    },
+    prepareEntry() {
+      let dateCreated = new Date()
+      let data = JSON.stringify(this.entries)
+      let total = this.getTotal()
+    },
+    saveEntry() {
+      if (isNaN(this.getTotal()) || this.entries.length <= 0 ) {
+          alert('Make sure you have atleast 1 entry and the total is a numeric value')
+        } else {
+          this.prepareEntry()
+      }
+    },
   },
   computed: {
     totalAmount() {
@@ -56,7 +91,6 @@ export default {
       this.entries.forEach(entry => {
           total += Number(entry.spent)
       })
-      console.log(JSON.stringify(this.entries))
       if (isNaN(total)) return "Please provide valid value"
       else return "PHP " + parseFloat(total).toFixed(2);
     }
@@ -66,6 +100,9 @@ export default {
 
 <style lang="sass" scoped>
 #entry-form
+  .entry-row
+    position: relative
+
   .label,
   .input
     &:focus
@@ -79,9 +116,14 @@ export default {
     font-weight: 700
     color: #9a9a9a
 
-  .input
+  .input,
+  .input-spent-label
     font-size: 1.25rem
-    font-weight: 400
+    font-weight: 600
+
+    &-spent::before
+      content: 'PHP'
+      display: inline-block
 
   .entry-input-spent
     border-left: 1px solid rgba(0,0,0,.1)
@@ -91,4 +133,25 @@ export default {
 
 .total
   color: #fb3c5d
+
+.delete,
+.icon
+  transition: all .2s
+
+.delete
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 20px 30px
+  background-color: #f3f3f3
+  width: 50px
+
+  .icon
+    color: #a0a0a0
+
+  &:hover
+    background-color: #fb3c5d
+    .icon
+      color: white
+
 </style>

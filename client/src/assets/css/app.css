@@ -15,12 +15,20 @@
 
 .btn-primary {
   background-color: #1abc9c;
-  -webkit-box-shadow: 0px 3px 12px rgba(158, 158, 158, 0.7);
-          box-shadow: 0px 3px 12px rgba(158, 158, 158, 0.7);
 }
 
 .btn-primary:hover {
-  -webkit-box-shadow: 0px 2px 6px rgba(158, 158, 158, 0.8);
-          box-shadow: 0px 2px 6px rgba(158, 158, 158, 0.8);
+  -webkit-transform: translateY(-2px);
+          transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background-color: #f3f3f3;
+  color: #a0a0a0;
+}
+
+.btn-ghost:hover {
+  -webkit-transform: translateY(-2px);
+          transform: translateY(-2px);
 }
 /*# sourceMappingURL=app.css.map */
