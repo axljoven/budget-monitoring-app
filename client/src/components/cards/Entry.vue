@@ -43,11 +43,11 @@ export default {
 .card-entry
   border: 1px solid rgba(0,0,0,0.08)
   border-radius: 4px
-  box-shadow: 0px 4px 14px rgba(167,167,167,0.5)
+  box-shadow: 0px 4px 10px rgba(167,167,167,0.5)
   transition: all .1s
 
   &:hover
-    box-shadow: 0px 3px 6px rgba(167,167,167,0.5)
+    box-shadow: 0px 2px 4px rgba(167,167,167,0.5)
 
   .card-header,
   .card-desc,

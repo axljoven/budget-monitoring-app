@@ -18,6 +18,7 @@
   position: fixed
   bottom: 20px
   right: 15px
+  z-index: 1000
 
   &-item
     $item-dimension: 55px

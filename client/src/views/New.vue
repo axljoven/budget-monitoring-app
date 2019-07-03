@@ -50,15 +50,15 @@
 export default {
   data() {
     return {
-      total: 0,
-      prevID: 0,
-      entries: []
+      total: 0,   // holds the total amount
+      prevID: 0,  // used in incrementing IDs for new entries
+      entries: [] // holds ll entries
     };
   },
   methods: {
     getTotal() {
       let total = 0;
-      this.entries.forEach(entry => total += entry.spent );
+      this.entries.forEach(entry => total += Number(entry.spent) );
       return Number(total);
     },
     newEntry() {
@@ -67,31 +67,31 @@ export default {
         id: newID,
         name: `Entry ${newID}`,
         spent: 0
-      })
+      });
     },
     deleteEntry(entryId) {
-      this.entries = this.entries.filter(entry => entry.id != entryId)
+      this.entries = this.entries.filter(entry => entry.id != entryId);
     },
     prepareEntry() {
-      let dateCreated = new Date()
-      let data = JSON.stringify(this.entries)
-      let total = this.getTotal()
+      return {
+        dateCreated: new Date(),
+        data: JSON.stringify(this.entries),
+        total: this.getTotal()
+      };
     },
     saveEntry() {
       if (isNaN(this.getTotal()) || this.entries.length <= 0 ) {
-          alert('Make sure you have atleast 1 entry and the total is a numeric value')
+          alert('Make sure you have atleast 1 entry and the total is a numeric value');
         } else {
-          this.prepareEntry()
+          console.log(this.prepareEntry());
       }
     },
   },
   computed: {
     totalAmount() {
       let total = 0;
-      this.entries.forEach(entry => {
-          total += Number(entry.spent)
-      })
-      if (isNaN(total)) return "Please provide valid value"
+      total = this.getTotal();
+      if (isNaN(total)) return "Please provide valid value";
       else return "PHP " + parseFloat(total).toFixed(2);
     }
   }
